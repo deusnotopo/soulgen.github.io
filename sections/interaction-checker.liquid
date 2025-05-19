@@ -1,0 +1,116 @@
+{% schema %}
+{
+  "name": "Interaction Checker",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Supplement Interaction Checker"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "interaction",
+      "name": "Interaction Rule",
+      "settings": [
+        {
+          "type": "text",
+          "id": "supplement_a",
+          "label": "Supplement A"
+        },
+        {
+          "type": "text",
+          "id": "supplement_b",
+          "label": "Supplement B"
+        },
+        {
+          "type": "select",
+          "id": "interaction_type",
+          "label": "Interaction Type",
+          "options": [
+            {
+              "value": "safe",
+              "label": "Safe to Combine"
+            },
+            {
+              "value": "caution",
+              "label": "Use with Caution"
+            },
+            {
+              "value": "avoid",
+              "label": "Avoid Combination"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Interaction Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Interaction Checker",
+      "category": "Interactive"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ section.settings.title }}</h2>
+      
+      <div class="mb-6">
+        <label for="supplement-search" class="block text-sm font-medium text-gray-700 mb-2">Search for supplements to check interactions:</label>
+        <input type="text" id="supplement-search" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Type supplement names...">
+      </div>
+
+      <div id="interaction-results" class="grid gap-4">
+        {% for block in section.blocks %}
+          {% if block.type == 'interaction' %}
+            <div class="interaction-item hidden p-4 rounded-lg border" 
+                 data-supplement-a="{{ block.settings.supplement_a | downcase }}"
+                 data-supplement-b="{{ block.settings.supplement_b | downcase }}">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-medium">
+                  {{ block.settings.supplement_a }} + {{ block.settings.supplement_b }}
+                </h3>
+                <span class="px-3 py-1 rounded-full text-sm {% if block.settings.interaction_type == 'safe' %}bg-green-100 text-green-800{% elsif block.settings.interaction_type == 'caution' %}bg-yellow-100 text-yellow-800{% else %}bg-red-100 text-red-800{% endif %}">
+                  {{ block.settings.interaction_type | capitalize }}
+                </span>
+              </div>
+              <p class="text-gray-600">{{ block.settings.description }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('supplement-search');
+  const interactionItems = document.querySelectorAll('.interaction-item');
+
+  searchInput.addEventListener('input', function() {
+    const searchTerms = this.value.toLowerCase().split(/[,\s]+/).filter(Boolean);
+    
+    interactionItems.forEach(item => {
+      const supplementA = item.dataset.supplementA;
+      const supplementB = item.dataset.supplementB;
+      
+      const matches = searchTerms.some(term => 
+        supplementA.includes(term) || supplementB.includes(term)
+      );
+      
+      item.classList.toggle('hidden', !matches && searchTerms.length > 0);
+    });
+  });
+});
+</script>
