@@ -1,0 +1,126 @@
+{% schema %}
+{
+  "name": "Scientific References",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Scientific Evidence"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reference",
+      "name": "Reference",
+      "settings": [
+        {
+          "type": "text",
+          "id": "authors",
+          "label": "Authors"
+        },
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Year"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Study Title"
+        },
+        {
+          "type": "text",
+          "id": "journal",
+          "label": "Journal"
+        },
+        {
+          "type": "text",
+          "id": "doi",
+          "label": "DOI"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            {
+              "value": "neuro",
+              "label": "Neurological"
+            },
+            {
+              "value": "cardio",
+              "label": "Cardiovascular"
+            },
+            {
+              "value": "muscular",
+              "label": "Muscular"
+            },
+            {
+              "value": "digestivo",
+              "label": "Digestive"
+            },
+            {
+              "value": "metabolico",
+              "label": "Metabolic"
+            },
+            {
+              "value": "reprodutor",
+              "label": "Reproductive"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scientific References",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">{{ section.settings.title }}</h2>
+  
+  <div class="grid gap-6">
+    {% assign categories = "neuro,cardio,muscular,digestivo,metabolico,reprodutor" | split: "," %}
+    
+    {% for category in categories %}
+      {% assign categoryRefs = section.blocks | where: "type", "reference" | where: "settings.category", category %}
+      {% if categoryRefs.size > 0 %}
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div class="p-4 {% if category == 'neuro' %}bg-neuro{% elsif category == 'cardio' %}bg-cardio{% elsif category == 'muscular' %}bg-muscular{% elsif category == 'digestivo' %}bg-digestivo{% elsif category == 'metabolico' %}bg-metabolico{% else %}bg-reprodutor{% endif %} bg-opacity-10">
+            <h3 class="text-lg font-medium flex items-center">
+              <i class="fas {% if category == 'neuro' %}fa-brain{% elsif category == 'cardio' %}fa-heart{% elsif category == 'muscular' %}fa-dumbbell{% elsif category == 'digestivo' %}fa-stomach{% elsif category == 'metabolico' %}fa-fire{% else %}fa-venus-mars{% endif %} mr-2"></i>
+              {{ category | capitalize }} System Studies
+            </h3>
+          </div>
+          
+          <div class="p-4">
+            {% for ref in categoryRefs %}
+              <div class="mb-4 last:mb-0">
+                <p class="text-gray-800">
+                  {{ ref.settings.authors }} ({{ ref.settings.year }}).
+                  <span class="font-medium">{{ ref.settings.title }}.</span>
+                  <em>{{ ref.settings.journal }}</em>.
+                </p>
+                {% if ref.settings.doi != blank %}
+                  <a href="https://doi.org/{{ ref.settings.doi }}" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center mt-1">
+                    <i class="fas fa-external-link-alt mr-1"></i>
+                    DOI: {{ ref.settings.doi }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

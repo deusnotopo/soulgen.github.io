@@ -1,0 +1,113 @@
+{% schema %}
+{
+  "name": "Product Comparison",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Compare Combinations"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_item",
+      "name": "Comparison Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature",
+          "label": "Feature Name"
+        },
+        {
+          "type": "text",
+          "id": "neuro",
+          "label": "Neurological Value"
+        },
+        {
+          "type": "text",
+          "id": "cardio",
+          "label": "Cardiovascular Value"
+        },
+        {
+          "type": "text",
+          "id": "muscular",
+          "label": "Muscular Value"
+        },
+        {
+          "type": "text",
+          "id": "digestivo",
+          "label": "Digestive Value"
+        },
+        {
+          "type": "text",
+          "id": "metabolico",
+          "label": "Metabolic Value"
+        },
+        {
+          "type": "text",
+          "id": "reprodutor",
+          "label": "Reproductive Value"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Comparison",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="container mx-auto px-4 py-8 max-w-6xl overflow-x-auto">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">{{ section.settings.title }}</h2>
+  
+  <table class="w-full bg-white rounded-lg shadow-lg">
+    <thead>
+      <tr>
+        <th class="p-4 text-left bg-gray-50 rounded-tl-lg">Feature</th>
+        <th class="p-4 text-center bg-neuro bg-opacity-10">
+          <i class="fas fa-brain text-neuro"></i>
+          <span class="block">Neurological</span>
+        </th>
+        <th class="p-4 text-center bg-cardio bg-opacity-10">
+          <i class="fas fa-heart text-cardio"></i>
+          <span class="block">Cardiovascular</span>
+        </th>
+        <th class="p-4 text-center bg-muscular bg-opacity-10">
+          <i class="fas fa-dumbbell text-muscular"></i>
+          <span class="block">Muscular</span>
+        </th>
+        <th class="p-4 text-center bg-digestivo bg-opacity-10">
+          <i class="fas fa-stomach text-digestivo"></i>
+          <span class="block">Digestive</span>
+        </th>
+        <th class="p-4 text-center bg-metabolico bg-opacity-10">
+          <i class="fas fa-fire text-metabolico"></i>
+          <span class="block">Metabolic</span>
+        </th>
+        <th class="p-4 text-center bg-reprodutor bg-opacity-10 rounded-tr-lg">
+          <i class="fas fa-venus-mars text-reprodutor"></i>
+          <span class="block">Reproductive</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for block in section.blocks %}
+        {% if block.type == 'comparison_item' %}
+          <tr class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+            <td class="p-4 font-medium">{{ block.settings.feature }}</td>
+            <td class="p-4 text-center">{{ block.settings.neuro }}</td>
+            <td class="p-4 text-center">{{ block.settings.cardio }}</td>
+            <td class="p-4 text-center">{{ block.settings.muscular }}</td>
+            <td class="p-4 text-center">{{ block.settings.digestivo }}</td>
+            <td class="p-4 text-center">{{ block.settings.metabolico }}</td>
+            <td class="p-4 text-center">{{ block.settings.reprodutor }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
