@@ -1,0 +1,72 @@
+{% schema %}
+{
+  "name": "Supplements Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Como usar esta plataforma"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "System Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "System Title"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "FontAwesome Icon Class"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "System Color"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div class="container mx-auto px-4 py-8 max-w-6xl">
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+    <div class="p-6">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ section.settings.section_title }}</h2>
+      <p class="text-gray-600 mb-4">Selecione abaixo o sistema que deseja otimizar e descubra combos de suplementos cientificamente formulados para cada necessidade.</p>
+      
+      <div class="flex flex-wrap gap-2 mb-6 justify-center" role="tablist">
+        {% for block in section.blocks %}
+          <button onclick="showTab('{{ block.id }}')" class="px-4 py-2 rounded-full text-white font-medium hover:bg-opacity-90 transition tab-button" style="background-color: {{ block.settings.color }}" aria-label="Ver combo {{ block.settings.title }}" id="tab-{{ block.id }}" role="tab">
+            <i class="{{ block.settings.icon }} mr-2"></i> {{ block.settings.title }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% for block in section.blocks %}
+    <div id="{{ block.id }}" class="tab-content {% if forloop.first %}active{% endif %}">
+      <!-- Tab content here -->
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    document.getElementById(tabId).classList.add('active');
+    document.querySelectorAll('[role="tab"]').forEach(btn => {
+      btn.setAttribute('aria-selected', 'false');
+    });
+    document.getElementById('tab-' + tabId).setAttribute('aria-selected', 'true');
+  }
+</script>

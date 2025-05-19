@@ -1,0 +1,44 @@
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.combo-card {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.combo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-right: 6px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  transform: scale(1.05);
+}
+
+.tab-content {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.tab-content.active {
+  display: block;
+  opacity: 1;
+}

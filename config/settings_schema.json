@@ -1,0 +1,25 @@
+[
+  {
+    "name": "Theme Information",
+    "theme_name": "Suplementos Inteligentes",
+    "theme_version": "1.0.0",
+    "theme_author": "Your Name",
+    "theme_documentation_url": "https://github.com/your-username/theme-name#readme",
+    "theme_support_url": "https://github.com/your-username/theme-name/issues"
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      }
+    ]
+  }
+]

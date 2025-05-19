@@ -1,0 +1,32 @@
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "© 2023 Suplementos Inteligentes"
+    }
+  ]
+}
+{% endschema %}
+
+<footer class="mt-12 text-center text-gray-500 text-sm">
+  <div class="bg-white p-6 rounded-xl shadow-md">
+    <p>{{ section.settings.copyright_text }}. Todas as informações são meramente informativas e não substituem orientação médica.</p>
+    <p class="mt-2">Consulte sempre um profissional de saúde antes de iniciar qualquer suplementação.</p>
+    <div class="mt-4 flex justify-center space-x-4">
+      {% if settings.social_facebook_link != blank %}
+        <a href="{{ settings.social_facebook_link }}" class="text-gray-400 hover:text-gray-600 transition">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      {% endif %}
+      {% if settings.social_instagram_link != blank %}
+        <a href="{{ settings.social_instagram_link }}" class="text-gray-400 hover:text-gray-600 transition">
+          <i class="fab fa-instagram"></i>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</footer>
