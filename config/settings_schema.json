@@ -1,25 +1,81 @@
-[
-  {
-    "name": "Theme Information",
-    "theme_name": "Suplementos Inteligentes",
-    "theme_version": "1.0.0",
-    "theme_author": "Your Name",
-    "theme_documentation_url": "https://github.com/your-username/theme-name#readme",
-    "theme_support_url": "https://github.com/your-username/theme-name/issues"
-  },
-  {
-    "name": "Social Media",
-    "settings": [
-      {
-        "type": "text",
-        "id": "social_facebook_link",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "text",
-        "id": "social_instagram_link",
-        "label": "Instagram URL"
-      }
-    ]
-  }
-]
+{
+  "name": "theme_info",
+  "theme_name": "Suplementos Inteligentes",
+  "theme_version": "2.0.0",
+  "theme_author": "StackBlitz",
+  "theme_documentation_url": "https://github.com/your-username/theme-name#readme",
+  "theme_support_url": "https://github.com/your-username/theme-name/issues",
+  "settings": [
+    {
+      "name": "Colors",
+      "settings": [
+        {
+          "type": "color",
+          "id": "primary_color",
+          "label": "Primary Color",
+          "default": "#8e44ad"
+        },
+        {
+          "type": "color",
+          "id": "secondary_color",
+          "label": "Secondary Color",
+          "default": "#e74c3c"
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "settings": [
+        {
+          "type": "font_picker",
+          "id": "heading_font",
+          "label": "Headings",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "font_picker",
+          "id": "body_font",
+          "label": "Body text",
+          "default": "helvetica_n4"
+        }
+      ]
+    },
+    {
+      "name": "Social Media",
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_facebook_link",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "social_instagram_link",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "text",
+          "id": "social_twitter_link",
+          "label": "Twitter URL"
+        }
+      ]
+    },
+    {
+      "name": "Legal",
+      "settings": [
+        {
+          "type": "text",
+          "id": "legal_disclaimer",
+          "label": "Legal Disclaimer",
+          "default": "Todas as informações são meramente informativas e não substituem orientação médica."
+        },
+        {
+          "type": "text",
+          "id": "medical_advice",
+          "label": "Medical Advice",
+          "default": "Consulte sempre um profissional de saúde antes de iniciar qualquer suplementação."
+        }
+      ]
+    }
+  ]
+}

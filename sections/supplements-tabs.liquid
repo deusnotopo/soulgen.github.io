@@ -7,12 +7,19 @@
       "id": "section_title",
       "label": "Section Title",
       "default": "Como usar esta plataforma"
+    },
+    {
+      "type": "text",
+      "id": "section_description",
+      "label": "Section Description",
+      "default": "Selecione abaixo o sistema que deseja otimizar e descubra combos de suplementos cientificamente formulados para cada necessidade."
     }
   ],
   "blocks": [
     {
-      "type": "tab",
+      "type": "system_tab",
       "name": "System Tab",
+      "limit": 6,
       "settings": [
         {
           "type": "text",
@@ -28,33 +35,198 @@
           "type": "color",
           "id": "color",
           "label": "System Color"
+        },
+        {
+          "type": "product",
+          "id": "combo_product",
+          "label": "Combo Product"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "textarea",
+          "id": "composition",
+          "label": "Composition"
+        },
+        {
+          "type": "textarea",
+          "id": "morning_routine",
+          "label": "Morning Routine"
+        },
+        {
+          "type": "textarea",
+          "id": "afternoon_routine",
+          "label": "Afternoon Routine"
+        },
+        {
+          "type": "textarea",
+          "id": "evening_routine",
+          "label": "Evening Routine"
+        },
+        {
+          "type": "textarea",
+          "id": "expected_effects",
+          "label": "Expected Effects"
+        },
+        {
+          "type": "textarea",
+          "id": "contraindications",
+          "label": "Contraindications"
+        },
+        {
+          "type": "text",
+          "id": "treatment_duration",
+          "label": "Treatment Duration"
         }
       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Supplements Tabs",
+      "category": "Product"
     }
   ]
 }
 {% endschema %}
 
-<div class="container mx-auto px-4 py-8 max-w-6xl">
+<div class="container mx-auto px-4 py-8 max-w-6xl" data-section-id="{{ section.id }}">
   <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
     <div class="p-6">
       <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ section.settings.section_title }}</h2>
-      <p class="text-gray-600 mb-4">Selecione abaixo o sistema que deseja otimizar e descubra combos de suplementos cientificamente formulados para cada necessidade.</p>
+      <p class="text-gray-600 mb-4">{{ section.settings.section_description }}</p>
       
       <div class="flex flex-wrap gap-2 mb-6 justify-center" role="tablist">
         {% for block in section.blocks %}
-          <button onclick="showTab('{{ block.id }}')" class="px-4 py-2 rounded-full text-white font-medium hover:bg-opacity-90 transition tab-button" style="background-color: {{ block.settings.color }}" aria-label="Ver combo {{ block.settings.title }}" id="tab-{{ block.id }}" role="tab">
-            <i class="{{ block.settings.icon }} mr-2"></i> {{ block.settings.title }}
-          </button>
+          {% if block.type == 'system_tab' %}
+            <button 
+              onclick="showTab('{{ block.id }}')" 
+              class="px-4 py-2 rounded-full text-white font-medium hover:bg-opacity-90 transition tab-button" 
+              style="background-color: {{ block.settings.color }}" 
+              aria-label="Ver combo {{ block.settings.title }}" 
+              id="tab-{{ block.id }}" 
+              role="tab"
+              data-block-id="{{ block.id }}"
+            >
+              <i class="{{ block.settings.icon }} mr-2"></i> 
+              {{ block.settings.title }}
+            </button>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
   </div>
 
   {% for block in section.blocks %}
-    <div id="{{ block.id }}" class="tab-content {% if forloop.first %}active{% endif %}">
-      <!-- Tab content here -->
-    </div>
+    {% if block.type == 'system_tab' %}
+      <div id="{{ block.id }}" class="tab-content {% if forloop.first %}active{% endif %}" data-block-id="{{ block.id }}">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border-l-4 combo-card" style="border-color: {{ block.settings.color }}">
+          <div class="p-6">
+            <div class="flex items-center mb-4">
+              <div class="system-icon" style="color: {{ block.settings.color }}">
+                <i class="{{ block.settings.icon }}"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-800 ml-3">{{ block.settings.title }}</h2>
+            </div>
+            <p class="text-gray-600 mb-6">{{ block.settings.description }}</p>
+            
+            <div class="mb-6 highlight-box bg-gray-50 p-4 rounded-lg">
+              <h3 class="text-lg font-medium text-gray-700 mb-3">Composição:</h3>
+              <div class="composition-pills">
+                {% assign compositions = block.settings.composition | split: ',' %}
+                {% for item in compositions %}
+                  <span class="pill text-white hover:shadow-md" style="background-color: {{ block.settings.color }}">
+                    {{ item | strip }}
+                  </span>
+                {% endfor %}
+              </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+              {% if block.settings.morning_routine != blank %}
+                <div class="bg-gray-50 p-4 rounded-lg time-card">
+                  <div class="flex items-center mb-2">
+                    <i class="fas fa-sun text-yellow-500 mr-2 text-xl"></i>
+                    <h4 class="font-medium text-gray-700">Manhã</h4>
+                  </div>
+                  {{ block.settings.morning_routine }}
+                </div>
+              {% endif %}
+              
+              {% if block.settings.afternoon_routine != blank %}
+                <div class="bg-gray-50 p-4 rounded-lg time-card">
+                  <div class="flex items-center mb-2">
+                    <i class="fas fa-cloud-sun text-orange-400 mr-2 text-xl"></i>
+                    <h4 class="font-medium text-gray-700">Tarde</h4>
+                  </div>
+                  {{ block.settings.afternoon_routine }}
+                </div>
+              {% endif %}
+              
+              {% if block.settings.evening_routine != blank %}
+                <div class="bg-gray-50 p-4 rounded-lg time-card">
+                  <div class="flex items-center mb-2">
+                    <i class="fas fa-moon text-indigo-400 mr-2 text-xl"></i>
+                    <h4 class="font-medium text-gray-700">Noite</h4>
+                  </div>
+                  {{ block.settings.evening_routine }}
+                </div>
+              {% endif %}
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+              {% if block.settings.expected_effects != blank %}
+                <div class="bg-green-50 p-4 rounded-lg highlight-box">
+                  <h3 class="text-lg font-medium text-green-800 mb-2 flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i> Efeitos esperados:
+                  </h3>
+                  {{ block.settings.expected_effects }}
+                </div>
+              {% endif %}
+              
+              {% if block.settings.contraindications != blank %}
+                <div class="bg-red-50 p-4 rounded-lg highlight-box">
+                  <h3 class="text-lg font-medium text-red-800 mb-2 flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> Contraindicações:
+                  </h3>
+                  {{ block.settings.contraindications }}
+                </div>
+              {% endif %}
+            </div>
+            
+            {% if block.settings.treatment_duration != blank %}
+              <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 flex items-center">
+                <i class="fas fa-calendar-alt text-gray-600 mr-3 text-xl"></i>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-800 mb-1">Duração do tratamento:</h3>
+                  <p class="text-gray-700">{{ block.settings.treatment_duration }}</p>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if block.settings.combo_product != blank %}
+              <div class="mt-8 flex justify-end">
+                <form method="POST" action="/cart/add" class="product-form">
+                  <input type="hidden" name="id" value="{{ block.settings.combo_product.selected_or_first_available_variant.id }}">
+                  <button 
+                    type="submit" 
+                    class="inline-block text-white px-6 py-3 rounded-full font-semibold shadow hover:opacity-90 transition" 
+                    style="background-color: {{ block.settings.color }}"
+                    aria-label="Adicionar {{ block.settings.title }} ao carrinho"
+                  >
+                    Comprar este Combo
+                    <i class="fas fa-shopping-cart ml-2"></i>
+                  </button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
   {% endfor %}
 </div>
 
@@ -64,9 +236,50 @@
       tab.classList.remove('active');
     });
     document.getElementById(tabId).classList.add('active');
+    
     document.querySelectorAll('[role="tab"]').forEach(btn => {
       btn.setAttribute('aria-selected', 'false');
     });
     document.getElementById('tab-' + tabId).setAttribute('aria-selected', 'true');
+    
+    const tabContent = document.getElementById(tabId);
+    if (tabContent) {
+      window.scrollTo({
+        top: tabContent.offsetTop - 20,
+        behavior: 'smooth'
+      });
+    }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Keyboard navigation
+    const tabButtons = Array.from(document.querySelectorAll('[role="tab"]'));
+    tabButtons.forEach((btn, idx) => {
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          const next = tabButtons[(idx + 1) % tabButtons.length];
+          next.focus();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const prev = tabButtons[(idx - 1 + tabButtons.length) % tabButtons.length];
+          prev.focus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+
+    // Animate pills
+    const pills = document.querySelectorAll('.pill');
+    pills.forEach((pill, index) => {
+      pill.style.opacity = '0';
+      pill.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        pill.style.opacity = '1';
+        pill.style.transform = 'translateY(0)';
+      }, index * 100);
+    });
+  });
 </script>
